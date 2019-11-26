@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itrip.dao.user.UserMapper">
+
+  <select id="selectByExample"  resultMap="com.itrip.beans.pojo.User">
+    select
+    *
+    from itrip_user
+
+  </select>
+  <select id="selectByPrimaryKey"  resultMap="com.itrip.beans.pojo.User">
+    select 
+    *
+    from itrip_user
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <select id="selectByUserCode"  resultMap="com.itrip.beans.pojo.User">
+    select
+    *
+    from itrip_user
+    where userCode = #{userCode,jdbcType=String}
+  </select>
+
+</mapper>

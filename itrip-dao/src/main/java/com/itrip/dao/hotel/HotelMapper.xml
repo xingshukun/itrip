@@ -1,0 +1,516 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itrip.dao.hotel.HotelMapper">
+  <resultMap id="BaseResultMap" type="com.itrip.beans.pojo.Hotel">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="hotelName" jdbcType="VARCHAR" property="hotelname" />
+    <result column="countryId" jdbcType="BIGINT" property="countryid" />
+    <result column="provinceId" jdbcType="BIGINT" property="provinceid" />
+    <result column="cityId" jdbcType="BIGINT" property="cityid" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="hotelType" jdbcType="INTEGER" property="hoteltype" />
+    <result column="hotelLevel" jdbcType="INTEGER" property="hotellevel" />
+    <result column="isGroupPurchase" jdbcType="INTEGER" property="isgrouppurchase" />
+    <result column="redundantCityName" jdbcType="VARCHAR" property="redundantcityname" />
+    <result column="redundantProvinceName" jdbcType="VARCHAR" property="redundantprovincename" />
+    <result column="redundantCountryName" jdbcType="VARCHAR" property="redundantcountryname" />
+    <result column="redundantHotelStore" jdbcType="INTEGER" property="redundanthotelstore" />
+    <result column="creationDate" jdbcType="TIMESTAMP" property="creationdate" />
+    <result column="createdBy" jdbcType="BIGINT" property="createdby" />
+    <result column="modifyDate" jdbcType="TIMESTAMP" property="modifydate" />
+    <result column="modifiedBy" jdbcType="BIGINT" property="modifiedby" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.itrip.beans.pojo.HotelWithBLOBs">
+    <result column="details" jdbcType="LONGVARCHAR" property="details" />
+    <result column="facilities" jdbcType="LONGVARCHAR" property="facilities" />
+    <result column="hotelPolicy" jdbcType="LONGVARCHAR" property="hotelpolicy" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, hotelName, countryId, provinceId, cityId, address, hotelType, hotelLevel, isGroupPurchase, 
+    redundantCityName, redundantProvinceName, redundantCountryName, redundantHotelStore, 
+    creationDate, createdBy, modifyDate, modifiedBy
+  </sql>
+  <sql id="Blob_Column_List">
+    details, facilities, hotelPolicy
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.itrip.beans.pojo.HotelExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from itrip_hotel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.itrip.beans.pojo.HotelExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from itrip_hotel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from itrip_hotel
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from itrip_hotel
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.itrip.beans.pojo.HotelExample">
+    delete from itrip_hotel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.itrip.beans.pojo.HotelWithBLOBs">
+    insert into itrip_hotel (id, hotelName, countryId, 
+      provinceId, cityId, address, 
+      hotelType, hotelLevel, isGroupPurchase, 
+      redundantCityName, redundantProvinceName, 
+      redundantCountryName, redundantHotelStore, 
+      creationDate, createdBy, modifyDate, 
+      modifiedBy, details, facilities, 
+      hotelPolicy)
+    values (#{id,jdbcType=BIGINT}, #{hotelname,jdbcType=VARCHAR}, #{countryid,jdbcType=BIGINT}, 
+      #{provinceid,jdbcType=BIGINT}, #{cityid,jdbcType=BIGINT}, #{address,jdbcType=VARCHAR}, 
+      #{hoteltype,jdbcType=INTEGER}, #{hotellevel,jdbcType=INTEGER}, #{isgrouppurchase,jdbcType=INTEGER}, 
+      #{redundantcityname,jdbcType=VARCHAR}, #{redundantprovincename,jdbcType=VARCHAR}, 
+      #{redundantcountryname,jdbcType=VARCHAR}, #{redundanthotelstore,jdbcType=INTEGER}, 
+      #{creationdate,jdbcType=TIMESTAMP}, #{createdby,jdbcType=BIGINT}, #{modifydate,jdbcType=TIMESTAMP}, 
+      #{modifiedby,jdbcType=BIGINT}, #{details,jdbcType=LONGVARCHAR}, #{facilities,jdbcType=LONGVARCHAR}, 
+      #{hotelpolicy,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.itrip.beans.pojo.HotelWithBLOBs">
+    insert into itrip_hotel
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="hotelname != null">
+        hotelName,
+      </if>
+      <if test="countryid != null">
+        countryId,
+      </if>
+      <if test="provinceid != null">
+        provinceId,
+      </if>
+      <if test="cityid != null">
+        cityId,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="hoteltype != null">
+        hotelType,
+      </if>
+      <if test="hotellevel != null">
+        hotelLevel,
+      </if>
+      <if test="isgrouppurchase != null">
+        isGroupPurchase,
+      </if>
+      <if test="redundantcityname != null">
+        redundantCityName,
+      </if>
+      <if test="redundantprovincename != null">
+        redundantProvinceName,
+      </if>
+      <if test="redundantcountryname != null">
+        redundantCountryName,
+      </if>
+      <if test="redundanthotelstore != null">
+        redundantHotelStore,
+      </if>
+      <if test="creationdate != null">
+        creationDate,
+      </if>
+      <if test="createdby != null">
+        createdBy,
+      </if>
+      <if test="modifydate != null">
+        modifyDate,
+      </if>
+      <if test="modifiedby != null">
+        modifiedBy,
+      </if>
+      <if test="details != null">
+        details,
+      </if>
+      <if test="facilities != null">
+        facilities,
+      </if>
+      <if test="hotelpolicy != null">
+        hotelPolicy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="hotelname != null">
+        #{hotelname,jdbcType=VARCHAR},
+      </if>
+      <if test="countryid != null">
+        #{countryid,jdbcType=BIGINT},
+      </if>
+      <if test="provinceid != null">
+        #{provinceid,jdbcType=BIGINT},
+      </if>
+      <if test="cityid != null">
+        #{cityid,jdbcType=BIGINT},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="hoteltype != null">
+        #{hoteltype,jdbcType=INTEGER},
+      </if>
+      <if test="hotellevel != null">
+        #{hotellevel,jdbcType=INTEGER},
+      </if>
+      <if test="isgrouppurchase != null">
+        #{isgrouppurchase,jdbcType=INTEGER},
+      </if>
+      <if test="redundantcityname != null">
+        #{redundantcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="redundantprovincename != null">
+        #{redundantprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="redundantcountryname != null">
+        #{redundantcountryname,jdbcType=VARCHAR},
+      </if>
+      <if test="redundanthotelstore != null">
+        #{redundanthotelstore,jdbcType=INTEGER},
+      </if>
+      <if test="creationdate != null">
+        #{creationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdby != null">
+        #{createdby,jdbcType=BIGINT},
+      </if>
+      <if test="modifydate != null">
+        #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedby != null">
+        #{modifiedby,jdbcType=BIGINT},
+      </if>
+      <if test="details != null">
+        #{details,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="facilities != null">
+        #{facilities,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="hotelpolicy != null">
+        #{hotelpolicy,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.itrip.beans.pojo.HotelExample" resultType="java.lang.Long">
+    select count(*) from itrip_hotel
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update itrip_hotel
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.hotelname != null">
+        hotelName = #{record.hotelname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.countryid != null">
+        countryId = #{record.countryid,jdbcType=BIGINT},
+      </if>
+      <if test="record.provinceid != null">
+        provinceId = #{record.provinceid,jdbcType=BIGINT},
+      </if>
+      <if test="record.cityid != null">
+        cityId = #{record.cityid,jdbcType=BIGINT},
+      </if>
+      <if test="record.address != null">
+        address = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hoteltype != null">
+        hotelType = #{record.hoteltype,jdbcType=INTEGER},
+      </if>
+      <if test="record.hotellevel != null">
+        hotelLevel = #{record.hotellevel,jdbcType=INTEGER},
+      </if>
+      <if test="record.isgrouppurchase != null">
+        isGroupPurchase = #{record.isgrouppurchase,jdbcType=INTEGER},
+      </if>
+      <if test="record.redundantcityname != null">
+        redundantCityName = #{record.redundantcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.redundantprovincename != null">
+        redundantProvinceName = #{record.redundantprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.redundantcountryname != null">
+        redundantCountryName = #{record.redundantcountryname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.redundanthotelstore != null">
+        redundantHotelStore = #{record.redundanthotelstore,jdbcType=INTEGER},
+      </if>
+      <if test="record.creationdate != null">
+        creationDate = #{record.creationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createdby != null">
+        createdBy = #{record.createdby,jdbcType=BIGINT},
+      </if>
+      <if test="record.modifydate != null">
+        modifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.modifiedby != null">
+        modifiedBy = #{record.modifiedby,jdbcType=BIGINT},
+      </if>
+      <if test="record.details != null">
+        details = #{record.details,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.facilities != null">
+        facilities = #{record.facilities,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.hotelpolicy != null">
+        hotelPolicy = #{record.hotelpolicy,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update itrip_hotel
+    set id = #{record.id,jdbcType=BIGINT},
+      hotelName = #{record.hotelname,jdbcType=VARCHAR},
+      countryId = #{record.countryid,jdbcType=BIGINT},
+      provinceId = #{record.provinceid,jdbcType=BIGINT},
+      cityId = #{record.cityid,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      hotelType = #{record.hoteltype,jdbcType=INTEGER},
+      hotelLevel = #{record.hotellevel,jdbcType=INTEGER},
+      isGroupPurchase = #{record.isgrouppurchase,jdbcType=INTEGER},
+      redundantCityName = #{record.redundantcityname,jdbcType=VARCHAR},
+      redundantProvinceName = #{record.redundantprovincename,jdbcType=VARCHAR},
+      redundantCountryName = #{record.redundantcountryname,jdbcType=VARCHAR},
+      redundantHotelStore = #{record.redundanthotelstore,jdbcType=INTEGER},
+      creationDate = #{record.creationdate,jdbcType=TIMESTAMP},
+      createdBy = #{record.createdby,jdbcType=BIGINT},
+      modifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      modifiedBy = #{record.modifiedby,jdbcType=BIGINT},
+      details = #{record.details,jdbcType=LONGVARCHAR},
+      facilities = #{record.facilities,jdbcType=LONGVARCHAR},
+      hotelPolicy = #{record.hotelpolicy,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update itrip_hotel
+    set id = #{record.id,jdbcType=BIGINT},
+      hotelName = #{record.hotelname,jdbcType=VARCHAR},
+      countryId = #{record.countryid,jdbcType=BIGINT},
+      provinceId = #{record.provinceid,jdbcType=BIGINT},
+      cityId = #{record.cityid,jdbcType=BIGINT},
+      address = #{record.address,jdbcType=VARCHAR},
+      hotelType = #{record.hoteltype,jdbcType=INTEGER},
+      hotelLevel = #{record.hotellevel,jdbcType=INTEGER},
+      isGroupPurchase = #{record.isgrouppurchase,jdbcType=INTEGER},
+      redundantCityName = #{record.redundantcityname,jdbcType=VARCHAR},
+      redundantProvinceName = #{record.redundantprovincename,jdbcType=VARCHAR},
+      redundantCountryName = #{record.redundantcountryname,jdbcType=VARCHAR},
+      redundantHotelStore = #{record.redundanthotelstore,jdbcType=INTEGER},
+      creationDate = #{record.creationdate,jdbcType=TIMESTAMP},
+      createdBy = #{record.createdby,jdbcType=BIGINT},
+      modifyDate = #{record.modifydate,jdbcType=TIMESTAMP},
+      modifiedBy = #{record.modifiedby,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.itrip.beans.pojo.HotelWithBLOBs">
+    update itrip_hotel
+    <set>
+      <if test="hotelname != null">
+        hotelName = #{hotelname,jdbcType=VARCHAR},
+      </if>
+      <if test="countryid != null">
+        countryId = #{countryid,jdbcType=BIGINT},
+      </if>
+      <if test="provinceid != null">
+        provinceId = #{provinceid,jdbcType=BIGINT},
+      </if>
+      <if test="cityid != null">
+        cityId = #{cityid,jdbcType=BIGINT},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="hoteltype != null">
+        hotelType = #{hoteltype,jdbcType=INTEGER},
+      </if>
+      <if test="hotellevel != null">
+        hotelLevel = #{hotellevel,jdbcType=INTEGER},
+      </if>
+      <if test="isgrouppurchase != null">
+        isGroupPurchase = #{isgrouppurchase,jdbcType=INTEGER},
+      </if>
+      <if test="redundantcityname != null">
+        redundantCityName = #{redundantcityname,jdbcType=VARCHAR},
+      </if>
+      <if test="redundantprovincename != null">
+        redundantProvinceName = #{redundantprovincename,jdbcType=VARCHAR},
+      </if>
+      <if test="redundantcountryname != null">
+        redundantCountryName = #{redundantcountryname,jdbcType=VARCHAR},
+      </if>
+      <if test="redundanthotelstore != null">
+        redundantHotelStore = #{redundanthotelstore,jdbcType=INTEGER},
+      </if>
+      <if test="creationdate != null">
+        creationDate = #{creationdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createdby != null">
+        createdBy = #{createdby,jdbcType=BIGINT},
+      </if>
+      <if test="modifydate != null">
+        modifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifiedby != null">
+        modifiedBy = #{modifiedby,jdbcType=BIGINT},
+      </if>
+      <if test="details != null">
+        details = #{details,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="facilities != null">
+        facilities = #{facilities,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="hotelpolicy != null">
+        hotelPolicy = #{hotelpolicy,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.itrip.beans.pojo.HotelWithBLOBs">
+    update itrip_hotel
+    set hotelName = #{hotelname,jdbcType=VARCHAR},
+      countryId = #{countryid,jdbcType=BIGINT},
+      provinceId = #{provinceid,jdbcType=BIGINT},
+      cityId = #{cityid,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      hotelType = #{hoteltype,jdbcType=INTEGER},
+      hotelLevel = #{hotellevel,jdbcType=INTEGER},
+      isGroupPurchase = #{isgrouppurchase,jdbcType=INTEGER},
+      redundantCityName = #{redundantcityname,jdbcType=VARCHAR},
+      redundantProvinceName = #{redundantprovincename,jdbcType=VARCHAR},
+      redundantCountryName = #{redundantcountryname,jdbcType=VARCHAR},
+      redundantHotelStore = #{redundanthotelstore,jdbcType=INTEGER},
+      creationDate = #{creationdate,jdbcType=TIMESTAMP},
+      createdBy = #{createdby,jdbcType=BIGINT},
+      modifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      modifiedBy = #{modifiedby,jdbcType=BIGINT},
+      details = #{details,jdbcType=LONGVARCHAR},
+      facilities = #{facilities,jdbcType=LONGVARCHAR},
+      hotelPolicy = #{hotelpolicy,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.itrip.beans.pojo.Hotel">
+    update itrip_hotel
+    set hotelName = #{hotelname,jdbcType=VARCHAR},
+      countryId = #{countryid,jdbcType=BIGINT},
+      provinceId = #{provinceid,jdbcType=BIGINT},
+      cityId = #{cityid,jdbcType=BIGINT},
+      address = #{address,jdbcType=VARCHAR},
+      hotelType = #{hoteltype,jdbcType=INTEGER},
+      hotelLevel = #{hotellevel,jdbcType=INTEGER},
+      isGroupPurchase = #{isgrouppurchase,jdbcType=INTEGER},
+      redundantCityName = #{redundantcityname,jdbcType=VARCHAR},
+      redundantProvinceName = #{redundantprovincename,jdbcType=VARCHAR},
+      redundantCountryName = #{redundantcountryname,jdbcType=VARCHAR},
+      redundantHotelStore = #{redundanthotelstore,jdbcType=INTEGER},
+      creationDate = #{creationdate,jdbcType=TIMESTAMP},
+      createdBy = #{createdby,jdbcType=BIGINT},
+      modifyDate = #{modifydate,jdbcType=TIMESTAMP},
+      modifiedBy = #{modifiedby,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
